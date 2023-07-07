@@ -1,27 +1,31 @@
-name: GraalVM Native Image builds
-on:
-  push:
-    tags:
-      - 'v*'
-permissions:
-  contents: write
-  packages: write
+name: GraalVM 的 Helloworld 测试
+on: [push, pull_request]
 jobs:
   build:
-    name: 在 ${{ matrix.os }} 上构建
+    name: HelloWorld on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: 上传到 release 中 (目前有问题)
-        uses: svenstaro/upload-release-action@v2
+
+      - uses: graalvm/setup-graalvm@v1
         with:
-           repo_token: ${{ secrets.GITHUB_TOKEN }}
-           file:  test/uuu*
-           overwrite: true
-           file_glob: true
-           body: "这是body"
+          java-version: '17.0.7'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: Build and run HelloWorld.java
+        run: |
+          echo 'public class HelloWorld { public static void main(String[] args) { System.out.println("Hello, World!"); } }' > HelloWorld.java
+          javac HelloWorld.java
+          native-image HelloWorld
+          ./helloworld
+      
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: helloworld-${{ matrix.os }}
+          path: helloworld*

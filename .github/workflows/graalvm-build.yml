@@ -8,8 +8,6 @@ jobs:
       matrix:
         os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v3
-
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: '17.0.7'
@@ -23,7 +21,8 @@ jobs:
           javac HelloWorld.java
           native-image HelloWorld
           ./helloworld
-      
+          tree
+      # 上传
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:

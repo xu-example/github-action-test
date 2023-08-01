@@ -1,0 +1,15 @@
+name: 测试上传artifact
+on: [push, pull_request]
+jobs:
+  build:
+    name: 测试上传artifact
+    runs-on: ubuntu-latest
+    steps:
+      # 下载代码
+      - uses: actions/checkout@v3
+
+      - name: 上传
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: test-artifact
+          path: test/a.*

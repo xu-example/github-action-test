@@ -1,5 +1,5 @@
 name: 上传release测试
-# 创建新的tag时触发
+# 创建新的tag时触发,tag名字就是release的名字
 on:
   push:
     tags:
@@ -10,20 +10,17 @@ permissions:
 jobs:
   build:
     name: 在 ${{ matrix.os }} 上构建
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       
-      - name: 上传到 release 中 (目前有问题)
+      - name: 上传到 release 中
         uses: svenstaro/upload-release-action@v2
         with:
            repo_token: ${{ secrets.GITHUB_TOKEN }}
-           file:  test/uuu*
+           file:  test/a.*
            overwrite: true
            file_glob: true
            body: "这是body"

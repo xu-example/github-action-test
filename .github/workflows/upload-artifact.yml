@@ -1,5 +1,8 @@
 name: 测试上传artifact
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - 'artifact*'
 jobs:
   build:
     name: 测试上传artifact

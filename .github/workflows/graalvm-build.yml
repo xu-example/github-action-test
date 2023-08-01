@@ -1,8 +1,11 @@
 name: GraalVM 的 Helloworld 测试
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - 'graalvm*' # 创建graalvm开头的分支的时候触发
 jobs:
   build:
-    name: HelloWorld on ${{ matrix.os }}
+    name: HelloWorld-GraalVM on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -20,11 +23,6 @@ jobs:
           echo 'public class HelloWorld { public static void main(String[] args) { System.out.println("Hello, World!"); } }' > HelloWorld.java
           javac HelloWorld.java
           native-image HelloWorld
-          ./helloworld
-          tree
-      # 上传
-      - name: Upload binary
-        uses: actions/upload-artifact@v2
-        with:
-          name: helloworld-${{ matrix.os }}
-          path: helloworld*
+          ./helloworld 
+          ls
+      # 这个helloworld文件就是生成后的文件

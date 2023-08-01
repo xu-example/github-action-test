@@ -1,4 +1,4 @@
-name: 测试上传artifact
+name: "测试:上传artifact"
 on:
   push:
     tags:

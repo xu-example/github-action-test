@@ -1,4 +1,4 @@
-name: GraalVM 的 Helloworld 测试
+name: "测试:GraalVM编译Helloworld"
 on:
   push:
     tags:

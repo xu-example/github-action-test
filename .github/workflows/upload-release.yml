@@ -1,4 +1,4 @@
-name: 上传release测试
+name: (测试:上传release)
 # 创建新的tag时触发,tag名字就是release的名字
 on:
   push:
